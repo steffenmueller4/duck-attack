@@ -12,6 +12,13 @@ class Game:
         self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.running = True
+        self.background = self._load_background()
+
+    def _load_background(self) -> pygame.Surface:
+        image = pygame.image.load(settings.BACKGROUND_IMAGE).convert()
+        if image.get_size() != self.screen.get_size():
+            image = pygame.transform.smoothscale(image, self.screen.get_size())
+        return image
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -24,7 +31,7 @@ class Game:
         """Advance the game state by ``dt`` seconds."""
 
     def draw(self) -> None:
-        self.screen.fill(settings.SKY_COLOR)
+        self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
 
     def run(self, max_frames: int | None = None) -> None:

@@ -7,6 +7,7 @@ from duck_attack.game import Game
 def test_game_runs_a_few_frames():
     game = Game()
     assert game.screen.get_size() == (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
+    assert game.background.get_size() == game.screen.get_size()
     game.run(max_frames=3)
     assert not pygame.get_init()
 

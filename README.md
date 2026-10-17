@@ -38,5 +38,6 @@ ruff format .        # format
 
 ```
 src/duck_attack/     game package (entry point: __main__.py)
+  assets/images/     game graphics
 tests/               pytest tests
 ```
