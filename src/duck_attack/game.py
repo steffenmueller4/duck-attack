@@ -3,6 +3,7 @@
 import pygame
 
 from duck_attack import settings
+from duck_attack.duck import Duck, load_duck_image
 
 
 class Game:
@@ -13,6 +14,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.background = self._load_background()
+        self.duck_image = load_duck_image()
+        self.ducks: pygame.sprite.Group = pygame.sprite.Group()
 
     def _load_background(self) -> pygame.Surface:
         image = pygame.image.load(settings.BACKGROUND_IMAGE).convert()
@@ -29,9 +32,14 @@ class Game:
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
+        # Send in a new duck once the previous one has left the screen.
+        if not self.ducks:
+            self.ducks.add(Duck(self.duck_image))
+        self.ducks.update(dt)
 
     def draw(self) -> None:
         self.screen.blit(self.background, (0, 0))
+        self.ducks.draw(self.screen)
         pygame.display.flip()
 
     def run(self, max_frames: int | None = None) -> None:

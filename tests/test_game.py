@@ -9,6 +9,7 @@ def test_game_runs_a_few_frames():
     assert game.screen.get_size() == (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
     assert game.background.get_size() == game.screen.get_size()
     game.run(max_frames=3)
+    assert len(game.ducks) == 1
     assert not pygame.get_init()
 
 
