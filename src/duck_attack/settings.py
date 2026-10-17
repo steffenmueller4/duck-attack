@@ -14,8 +14,8 @@ CROSSHAIR_IMAGE = ASSETS_DIR / "images" / "crosshair.png"
 AMBIENT_SOUNDS = [ASSETS_DIR / "sounds" / f"duck_{i}.mp3" for i in (1, 2, 3)]
 
 # A random ambient duck sound plays every AMBIENT_MIN_DELAY..AMBIENT_MAX_DELAY seconds.
-AMBIENT_MIN_DELAY = 4.0
-AMBIENT_MAX_DELAY = 12.0
+AMBIENT_MIN_DELAY = 2.0
+AMBIENT_MAX_DELAY = 7.0
 AMBIENT_VOLUME = 0.6  # 0.0 - 1.0
 
 CROSSHAIR_SIZE = 64  # cursor size in pixels (square)
@@ -40,7 +40,7 @@ POINTS_ROUNDING = 5
 DUCK_MIN_Y = 40
 DUCK_MAX_Y = 320
 
-ROUND_DURATION = 60  # seconds
+ROUND_DURATION = 30  # seconds
 SCORE_SCREEN_DURATION = 10  # seconds the final score is shown before the high-score list
 TIME_WARNING = 10  # seconds left from which the timer turns red
 

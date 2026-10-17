@@ -29,7 +29,7 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 ## Architecture
 
 - `game.py`: `Game` owns the loop (`handle_events` -> `update(dt)` -> `draw`) and a
-  `State` machine: `PLAYING` (60 s round) -> `ROUND_OVER` (final score, 10 s) ->
+  `State` machine: `PLAYING` (30 s round) -> `ROUND_OVER` (final score, 10 s) ->
   `HIGHSCORES` (click starts the next round).
 - `duck.py`: `Duck` sprite with a random distance (`scale`) that sets its size, speed
   and `points`; pixel-mask hit test; falls when shot. One duck flies at a time.

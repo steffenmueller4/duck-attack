@@ -28,7 +28,7 @@ Press `Esc` or close the window to quit.
 
 ## How to play
 
-Aim with the crosshair and click ducks to shoot them. A round lasts 60 seconds; the time
+Aim with the crosshair and click ducks to shoot them. A round lasts 30 seconds; the time
 left is shown top-left (red in the last 10 seconds), your score top-right.
 
 Ducks fly in at random distances. Close (big) ducks are worth 10 points; farther (smaller)
