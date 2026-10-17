@@ -5,6 +5,7 @@ import pygame
 from duck_attack import settings
 from duck_attack.crosshair import make_crosshair_cursor
 from duck_attack.duck import Duck, load_duck_image
+from duck_attack.hud import ScoreDisplay
 
 
 class Game:
@@ -18,6 +19,8 @@ class Game:
         self.duck_image = load_duck_image()
         self.ducks: pygame.sprite.Group = pygame.sprite.Group()
         pygame.mouse.set_cursor(make_crosshair_cursor())
+        self.score = 0
+        self.score_display = ScoreDisplay()
 
     def _load_background(self) -> pygame.Surface:
         image = pygame.image.load(settings.BACKGROUND_IMAGE).convert()
@@ -40,6 +43,7 @@ class Game:
         for duck in reversed(self.ducks.sprites()):
             if duck.is_hit_by(pos):
                 duck.shoot()
+                self.score += settings.POINTS_PER_HIT
                 return True
         return False
 
@@ -53,6 +57,7 @@ class Game:
     def draw(self) -> None:
         self.screen.blit(self.background, (0, 0))
         self.ducks.draw(self.screen)
+        self.score_display.draw(self.screen, self.score)
         pygame.display.flip()
 
     def run(self, max_frames: int | None = None) -> None:

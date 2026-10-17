@@ -30,6 +30,7 @@ def test_left_click_shoots_duck_and_next_one_starts():
     )
     game.handle_events()
     assert duck.shot
+    assert game.score == settings.POINTS_PER_HIT
     game.update(0.01)
     assert len(game.ducks) == 2  # the falling one plus a fresh one
     pygame.quit()
@@ -39,4 +40,16 @@ def test_missed_shot_hits_nothing():
     game = Game()
     game.update(1.0)
     assert not game.shoot((settings.SCREEN_WIDTH - 1, settings.SCREEN_HEIGHT - 1))
+    assert game.score == 0
+    pygame.quit()
+
+
+def test_each_hit_adds_points():
+    game = Game()
+    for _ in range(3):
+        game.update(1.0)
+        duck = next(d for d in game.ducks if not d.shot)
+        x, y = duck.mask.outline()[0]
+        assert game.shoot((duck.rect.x + x, duck.rect.y + y))
+    assert game.score == 3 * settings.POINTS_PER_HIT
     pygame.quit()
