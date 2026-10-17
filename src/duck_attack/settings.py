@@ -18,6 +18,10 @@ AMBIENT_MIN_DELAY = 2.0
 AMBIENT_MAX_DELAY = 7.0
 AMBIENT_VOLUME = 0.6  # 0.0 - 1.0
 
+# Every shot (hit or miss) plays one of these at random.
+SHOT_SOUNDS = [ASSETS_DIR / "sounds" / f"shot_{i}.mp3" for i in (1, 2, 3)]
+SHOT_VOLUME = 0.8  # 0.0 - 1.0
+
 CROSSHAIR_SIZE = 64  # cursor size in pixels (square)
 # Aim point as a fraction of the image size: the red dot, which sits slightly above center.
 CROSSHAIR_HOTSPOT = (0.501, 0.485)

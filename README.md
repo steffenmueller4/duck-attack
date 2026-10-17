@@ -28,8 +28,9 @@ Press `Esc` or close the window to quit.
 
 ## How to play
 
-Aim with the crosshair and click ducks to shoot them. A round lasts 30 seconds; the time
-left is shown top-left (red in the last 10 seconds), your score top-right.
+Aim with the crosshair and click ducks to shoot them; every shot goes bang. A round lasts
+30 seconds; the time left is shown top-left (red in the last 10 seconds), your score
+top-right.
 
 Ducks fly in at random distances. Close (big) ducks are worth 10 points; farther (smaller)
 ones are worth more, up to 30. Duck calls play in the background from time to time.
@@ -62,8 +63,8 @@ src/duck_attack/
   hud.py             score and timer display, text rendering
   screens.py         round-over and high-score screens
   highscores.py      high-score list (JSON file)
-  sounds.py          ambient duck sounds
+  sounds.py          shot sounds and ambient duck calls
   assets/images/     background, duck, crosshair
-  assets/sounds/     ambient duck calls
+  assets/sounds/     shot sounds and ambient duck calls
 tests/               pytest tests
 ```

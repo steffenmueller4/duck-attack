@@ -111,3 +111,27 @@ def test_clicks_do_not_shoot_after_round_is_over():
     game.handle_events()
     assert game.state is State.ROUND_OVER
     pygame.quit()
+
+
+def test_every_shot_plays_a_sound_hit_or_miss():
+    game = Game()
+    played = []
+    game.shot_sound.play = lambda: played.append(True)
+    game.update(1.0)
+    game.shoot((settings.SCREEN_WIDTH - 1, settings.SCREEN_HEIGHT - 1))  # miss
+    (duck,) = game.ducks
+    x, y = duck.mask.outline()[0]
+    game.shoot((duck.rect.x + x, duck.rect.y + y))  # hit
+    assert len(played) == 2
+    pygame.quit()
+
+
+def test_no_shot_sound_after_round_is_over():
+    game = Game()
+    played = []
+    game.shot_sound.play = lambda: played.append(True)
+    game.update(settings.ROUND_DURATION)
+    pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(10, 10)))
+    game.handle_events()
+    assert not played
+    pygame.quit()

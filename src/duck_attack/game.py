@@ -11,7 +11,7 @@ from duck_attack.duck import Duck, load_duck_image
 from duck_attack.highscores import HighScore, HighScoreList
 from duck_attack.hud import Hud
 from duck_attack.screens import HighScoreScreen, RoundOverScreen
-from duck_attack.sounds import AmbientSounds
+from duck_attack.sounds import AmbientSounds, RandomSound
 
 
 class State(Enum):
@@ -36,6 +36,7 @@ class Game:
         self.highscore_screen = HighScoreScreen()
         self.highscores = HighScoreList(settings.HIGHSCORES_FILE)
         self.ambience = AmbientSounds()
+        self.shot_sound = RandomSound(settings.SHOT_SOUNDS, settings.SHOT_VOLUME)
         self.start_round()
 
     def _load_background(self) -> pygame.Surface:
@@ -76,6 +77,7 @@ class Game:
 
     def shoot(self, pos: tuple[int, int]) -> bool:
         """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit."""
+        self.shot_sound.play()
         # Check the closest (drawn on top) duck first.
         for duck in reversed(self._ducks_far_to_near()):
             if duck.is_hit_by(pos):
