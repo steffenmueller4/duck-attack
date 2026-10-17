@@ -13,7 +13,7 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 
 - Source lives in `src/duck_attack/`, tests in `tests/`.
 - Game-wide constants go in `settings.py`; the main loop is `Game` in `game.py`.
-- Images live in `src/duck_attack/assets/images/`.
+- Images live in `src/duck_attack/assets/images/`, sounds in `src/duck_attack/assets/sounds/`.
 - Dependency ranges are declared in `pyproject.toml`; exact pins in `requirements*.txt`.
   Update both when adding a dependency.
 - Keep `ruff check` and `pytest` passing before committing.

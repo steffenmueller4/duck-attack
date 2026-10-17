@@ -11,6 +11,12 @@ ASSETS_DIR = Path(__file__).parent / "assets"
 BACKGROUND_IMAGE = ASSETS_DIR / "images" / "background.png"
 DUCK_IMAGE = ASSETS_DIR / "images" / "duck.png"
 CROSSHAIR_IMAGE = ASSETS_DIR / "images" / "crosshair.png"
+AMBIENT_SOUNDS = [ASSETS_DIR / "sounds" / f"duck_{i}.mp3" for i in (1, 2, 3)]
+
+# A random ambient duck sound plays every AMBIENT_MIN_DELAY..AMBIENT_MAX_DELAY seconds.
+AMBIENT_MIN_DELAY = 4.0
+AMBIENT_MAX_DELAY = 12.0
+AMBIENT_VOLUME = 0.6  # 0.0 - 1.0
 
 CROSSHAIR_SIZE = 64  # cursor size in pixels (square)
 # Aim point as a fraction of the image size: the red dot, which sits slightly above center.

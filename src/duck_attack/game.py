@@ -11,6 +11,7 @@ from duck_attack.duck import Duck, load_duck_image
 from duck_attack.highscores import HighScore, HighScoreList
 from duck_attack.hud import Hud
 from duck_attack.screens import HighScoreScreen, RoundOverScreen
+from duck_attack.sounds import AmbientSounds
 
 
 class State(Enum):
@@ -34,6 +35,7 @@ class Game:
         self.round_over_screen = RoundOverScreen()
         self.highscore_screen = HighScoreScreen()
         self.highscores = HighScoreList(settings.HIGHSCORES_FILE)
+        self.ambience = AmbientSounds()
         self.start_round()
 
     def _load_background(self) -> pygame.Surface:
@@ -87,6 +89,7 @@ class Game:
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
+        self.ambience.update(dt)
         self.state_time += dt
         if self.state is State.PLAYING:
             if self.time_left <= 0:
