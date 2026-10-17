@@ -28,11 +28,19 @@ Press `Esc` or close the window to quit.
 
 ## How to play
 
-Click ducks to shoot them. A round lasts 60 seconds. Close ducks are worth 10 points;
-farther (smaller) ones are worth more, up to 30. After the round, your score is shown,
-followed by the high-score list. Click to start the next round.
+Aim with the crosshair and click ducks to shoot them. A round lasts 60 seconds; the time
+left is shown top-left (red in the last 10 seconds), your score top-right.
 
-High scores are saved in `~/.duck-attack/highscores.json`.
+Ducks fly in at random distances. Close (big) ducks are worth 10 points; farther (smaller)
+ones are worth more, up to 30. Duck calls play in the background from time to time.
+
+After the round, your score is shown for 10 seconds, followed by the top-10 high-score
+list (your round is highlighted). Click to start the next round.
+
+High scores are saved in `~/.duck-attack/highscores.json`. Delete the file to reset them.
+
+Round length, points, duck size/speed, sound volume and more can be tuned in
+`src/duck_attack/settings.py`.
 
 ## Develop
 
@@ -45,7 +53,17 @@ ruff format .        # format
 ## Layout
 
 ```
-src/duck_attack/     game package (entry point: __main__.py)
-  assets/images/     game graphics
+src/duck_attack/
+  __main__.py        entry point
+  game.py            main loop and round flow (playing -> round over -> high scores)
+  settings.py        tunable constants
+  duck.py            duck sprite: flight, distance/size, hit test, points
+  crosshair.py       crosshair mouse cursor
+  hud.py             score and timer display, text rendering
+  screens.py         round-over and high-score screens
+  highscores.py      high-score list (JSON file)
+  sounds.py          ambient duck sounds
+  assets/images/     background, duck, crosshair
+  assets/sounds/     ambient duck calls
 tests/               pytest tests
 ```
