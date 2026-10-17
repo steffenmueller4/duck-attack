@@ -32,3 +32,30 @@ def test_duck_is_removed_after_leaving_screen_right(duck_image):
     for _ in range(int(crossing_time / 0.1) + 1):
         duck.update(0.1)
     assert not group
+
+
+def test_click_on_duck_pixel_hits(duck_image):
+    duck = Duck(duck_image, y=100)
+    duck.update(1.0)
+    x, y = duck.mask.outline()[0]  # a pixel that belongs to the duck
+    assert duck.is_hit_by((duck.rect.x + x, duck.rect.y + y))
+
+
+def test_click_on_transparent_corner_misses(duck_image):
+    duck = Duck(duck_image, y=100)
+    duck.update(1.0)
+    assert duck.rect.collidepoint(duck.rect.topleft)
+    assert not duck.is_hit_by(duck.rect.topleft)
+
+
+def test_shot_duck_falls_and_is_removed(duck_image):
+    group = pygame.sprite.Group(duck := Duck(duck_image, y=100))
+    duck.update(1.0)
+    duck.shoot()
+    assert not duck.is_hit_by(duck.rect.center)  # can't be shot twice
+    y = duck.rect.y
+    duck.update(0.1)
+    assert duck.rect.y > y
+    for _ in range(50):
+        duck.update(0.1)
+    assert not group

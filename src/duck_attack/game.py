@@ -31,11 +31,22 @@ class Game:
                 event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self.shoot(event.pos)
+
+    def shoot(self, pos: tuple[int, int]) -> bool:
+        """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit."""
+        # Check the top-most (last drawn) duck first.
+        for duck in reversed(self.ducks.sprites()):
+            if duck.is_hit_by(pos):
+                duck.shoot()
+                return True
+        return False
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
-        # Send in a new duck once the previous one has left the screen.
-        if not self.ducks:
+        # Send in a new duck once no duck is flying anymore (left the screen or shot).
+        if all(duck.shot for duck in self.ducks):
             self.ducks.add(Duck(self.duck_image))
         self.ducks.update(dt)
 

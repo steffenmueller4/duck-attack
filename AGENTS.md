@@ -17,3 +17,8 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 - Dependency ranges are declared in `pyproject.toml`; exact pins in `requirements*.txt`.
   Update both when adding a dependency.
 - Keep `ruff check` and `pytest` passing before committing.
+
+## Git
+
+- Never commit or push. The maintainer commits and pushes manually; leave changes in the
+  working tree and don't offer to commit.

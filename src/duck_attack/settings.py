@@ -18,6 +18,7 @@ CROSSHAIR_HOTSPOT = (0.501, 0.485)
 
 DUCK_WIDTH = 140  # on-screen width in pixels; height keeps the image's aspect ratio
 DUCK_SPEED = 260  # pixels per second
+DUCK_FALL_GRAVITY = 1500  # pixels per second squared, for shot ducks
 # Ducks fly somewhere in the sky band between these y positions.
 DUCK_MIN_Y = 40
 DUCK_MAX_Y = 320
