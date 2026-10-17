@@ -1,11 +1,22 @@
 """Main game loop."""
 
+from datetime import datetime
+from enum import Enum, auto
+
 import pygame
 
 from duck_attack import settings
 from duck_attack.crosshair import make_crosshair_cursor
 from duck_attack.duck import Duck, load_duck_image
-from duck_attack.hud import ScoreDisplay
+from duck_attack.highscores import HighScore, HighScoreList
+from duck_attack.hud import Hud
+from duck_attack.screens import HighScoreScreen, RoundOverScreen
+
+
+class State(Enum):
+    PLAYING = auto()
+    ROUND_OVER = auto()  # showing the final score
+    HIGHSCORES = auto()  # showing the high-score list; a click starts the next round
 
 
 class Game:
@@ -19,14 +30,35 @@ class Game:
         self.duck_image = load_duck_image()
         self.ducks: pygame.sprite.Group = pygame.sprite.Group()
         pygame.mouse.set_cursor(make_crosshair_cursor())
-        self.score = 0
-        self.score_display = ScoreDisplay()
+        self.hud = Hud()
+        self.round_over_screen = RoundOverScreen()
+        self.highscore_screen = HighScoreScreen()
+        self.highscores = HighScoreList(settings.HIGHSCORES_FILE)
+        self.start_round()
 
     def _load_background(self) -> pygame.Surface:
         image = pygame.image.load(settings.BACKGROUND_IMAGE).convert()
         if image.get_size() != self.screen.get_size():
             image = pygame.transform.smoothscale(image, self.screen.get_size())
         return image
+
+    def start_round(self) -> None:
+        self.state = State.PLAYING
+        self.state_time = 0.0  # seconds spent in the current state
+        self.score = 0
+        self.ducks.empty()
+        self.round_started = datetime.now()
+        self.highscore_rank: int | None = None
+
+    def end_round(self) -> None:
+        self.state = State.ROUND_OVER
+        self.state_time = 0.0
+        self.ducks.empty()
+        self.highscore_rank = self.highscores.add(HighScore(self.score, self.round_started))
+
+    @property
+    def time_left(self) -> float:
+        return max(0.0, settings.ROUND_DURATION - self.state_time)
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -35,7 +67,10 @@ class Game:
             ):
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self.shoot(event.pos)
+                if self.state is State.PLAYING:
+                    self.shoot(event.pos)
+                elif self.state is State.HIGHSCORES:
+                    self.start_round()
 
     def shoot(self, pos: tuple[int, int]) -> bool:
         """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit."""
@@ -52,17 +87,33 @@ class Game:
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
-        # Send in a new duck once no duck is flying anymore (left the screen or shot).
-        if all(duck.shot for duck in self.ducks):
-            self.ducks.add(Duck(self.duck_image))
-        self.ducks.update(dt)
+        self.state_time += dt
+        if self.state is State.PLAYING:
+            if self.time_left <= 0:
+                self.end_round()
+                return
+            # Send in a new duck once no duck is flying anymore (left the screen or shot).
+            if all(duck.shot for duck in self.ducks):
+                self.ducks.add(Duck(self.duck_image))
+            self.ducks.update(dt)
+        elif self.state is State.ROUND_OVER and self.state_time >= settings.SCORE_SCREEN_DURATION:
+            self.state = State.HIGHSCORES
+            self.state_time = 0.0
 
     def draw(self) -> None:
         self.screen.blit(self.background, (0, 0))
-        # Far ducks first so closer ones are drawn in front of them.
-        for duck in self._ducks_far_to_near():
-            self.screen.blit(duck.image, duck.rect)
-        self.score_display.draw(self.screen, self.score)
+        if self.state is State.PLAYING:
+            # Far ducks first so closer ones are drawn in front of them.
+            for duck in self._ducks_far_to_near():
+                self.screen.blit(duck.image, duck.rect)
+            self.hud.draw(self.screen, self.score, self.time_left)
+        elif self.state is State.ROUND_OVER:
+            seconds_left = settings.SCORE_SCREEN_DURATION - self.state_time
+            self.round_over_screen.draw(self.screen, self.score, seconds_left)
+        else:
+            self.highscore_screen.draw(
+                self.screen, self.highscores.entries, self.highscore_rank, self.score
+            )
         pygame.display.flip()
 
     def run(self, max_frames: int | None = None) -> None:

@@ -2,7 +2,8 @@ import pygame
 
 from duck_attack import settings
 from duck_attack.duck import Duck
-from duck_attack.game import Game
+from duck_attack.game import Game, State
+from duck_attack.highscores import HighScore
 
 
 def test_game_runs_a_few_frames():
@@ -66,4 +67,47 @@ def test_closer_duck_in_front_is_hit_first():
     near.rect.center = far.rect.center
     assert game.shoot(near.rect.center)
     assert near.shot and not far.shot
+    pygame.quit()
+
+
+def test_round_ends_after_duration_and_records_highscore(isolated_highscores):
+    game = Game()
+    game.score = 120
+    game.update(settings.ROUND_DURATION - 0.5)
+    assert game.state is State.PLAYING
+    game.update(1.0)
+    assert game.state is State.ROUND_OVER
+    assert not game.ducks
+    assert game.highscores.entries[0] == HighScore(120, game.round_started)
+    assert game.highscore_rank == 0
+    assert isolated_highscores.exists()
+    pygame.quit()
+
+
+def test_score_screen_then_highscores_then_click_restarts():
+    game = Game()
+    game.score = 50
+    game.update(settings.ROUND_DURATION)
+    game.draw()
+    game.update(settings.SCORE_SCREEN_DURATION - 0.5)
+    assert game.state is State.ROUND_OVER
+    game.update(1.0)
+    assert game.state is State.HIGHSCORES
+    game.draw()
+
+    pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(10, 10)))
+    game.handle_events()
+    assert game.state is State.PLAYING
+    assert game.score == 0
+    assert game.time_left == settings.ROUND_DURATION
+    pygame.quit()
+
+
+def test_clicks_do_not_shoot_after_round_is_over():
+    game = Game()
+    game.update(1.0)
+    game.update(settings.ROUND_DURATION)
+    pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(10, 10)))
+    game.handle_events()
+    assert game.state is State.ROUND_OVER
     pygame.quit()

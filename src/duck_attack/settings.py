@@ -30,10 +30,21 @@ DUCK_MAX_SCALE = 1.0
 POINTS_PER_HIT = 10
 POINTS_ROUNDING = 5
 
-SCORE_FONT_SIZE = 48
-SCORE_COLOR = (255, 255, 255)
-SCORE_SHADOW_COLOR = (20, 20, 20)
-SCORE_MARGIN = 20  # distance from the top-right corner in pixels
 # Ducks fly somewhere in the sky band between these y positions.
 DUCK_MIN_Y = 40
 DUCK_MAX_Y = 320
+
+ROUND_DURATION = 60  # seconds
+SCORE_SCREEN_DURATION = 10  # seconds the final score is shown before the high-score list
+TIME_WARNING = 10  # seconds left from which the timer turns red
+
+HIGHSCORES_FILE = Path.home() / ".duck-attack" / "highscores.json"
+MAX_HIGHSCORES = 10
+
+HUD_FONT_SIZE = 48
+HUD_MARGIN = 20  # distance of score/timer from the screen corners in pixels
+TEXT_COLOR = (255, 255, 255)
+TEXT_SHADOW_COLOR = (20, 20, 20)
+WARNING_COLOR = (255, 80, 60)
+HIGHLIGHT_COLOR = (255, 215, 0)
+OVERLAY_COLOR = (0, 0, 0, 150)  # dims the background behind the end-of-round screens
