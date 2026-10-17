@@ -10,6 +10,11 @@ FPS = 60
 ASSETS_DIR = Path(__file__).parent / "assets"
 BACKGROUND_IMAGE = ASSETS_DIR / "images" / "background.png"
 DUCK_IMAGE = ASSETS_DIR / "images" / "duck.png"
+CROSSHAIR_IMAGE = ASSETS_DIR / "images" / "crosshair.png"
+
+CROSSHAIR_SIZE = 64  # cursor size in pixels (square)
+# Aim point as a fraction of the image size: the red dot, which sits slightly above center.
+CROSSHAIR_HOTSPOT = (0.501, 0.485)
 
 DUCK_WIDTH = 140  # on-screen width in pixels; height keeps the image's aspect ratio
 DUCK_SPEED = 260  # pixels per second

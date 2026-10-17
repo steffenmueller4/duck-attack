@@ -3,6 +3,7 @@
 import pygame
 
 from duck_attack import settings
+from duck_attack.crosshair import make_crosshair_cursor
 from duck_attack.duck import Duck, load_duck_image
 
 
@@ -16,6 +17,7 @@ class Game:
         self.background = self._load_background()
         self.duck_image = load_duck_image()
         self.ducks: pygame.sprite.Group = pygame.sprite.Group()
+        pygame.mouse.set_cursor(make_crosshair_cursor())
 
     def _load_background(self) -> pygame.Surface:
         image = pygame.image.load(settings.BACKGROUND_IMAGE).convert()
