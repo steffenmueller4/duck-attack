@@ -20,7 +20,15 @@ DUCK_WIDTH = 140  # on-screen width in pixels; height keeps the image's aspect r
 DUCK_SPEED = 260  # pixels per second
 DUCK_FALL_GRAVITY = 1500  # pixels per second squared, for shot ducks
 
+# Each duck gets a random distance, expressed as a scale factor of DUCK_WIDTH:
+# 1.0 is the closest (full size), smaller values are farther away.
+DUCK_MIN_SCALE = 0.35
+DUCK_MAX_SCALE = 1.0
+
+# Points for a full-size duck. Farther ducks are worth more (POINTS_PER_HIT / scale,
+# rounded to POINTS_ROUNDING): e.g. 10 at scale 1.0, 20 at 0.5, 30 at 0.35.
 POINTS_PER_HIT = 10
+POINTS_ROUNDING = 5
 
 SCORE_FONT_SIZE = 48
 SCORE_COLOR = (255, 255, 255)

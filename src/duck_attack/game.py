@@ -39,13 +39,16 @@ class Game:
 
     def shoot(self, pos: tuple[int, int]) -> bool:
         """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit."""
-        # Check the top-most (last drawn) duck first.
-        for duck in reversed(self.ducks.sprites()):
+        # Check the closest (drawn on top) duck first.
+        for duck in reversed(self._ducks_far_to_near()):
             if duck.is_hit_by(pos):
                 duck.shoot()
-                self.score += settings.POINTS_PER_HIT
+                self.score += duck.points
                 return True
         return False
+
+    def _ducks_far_to_near(self) -> list[Duck]:
+        return sorted(self.ducks, key=lambda duck: duck.scale)
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
@@ -56,7 +59,9 @@ class Game:
 
     def draw(self) -> None:
         self.screen.blit(self.background, (0, 0))
-        self.ducks.draw(self.screen)
+        # Far ducks first so closer ones are drawn in front of them.
+        for duck in self._ducks_far_to_near():
+            self.screen.blit(duck.image, duck.rect)
         self.score_display.draw(self.screen, self.score)
         pygame.display.flip()
 
