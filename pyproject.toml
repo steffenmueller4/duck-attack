@@ -22,6 +22,12 @@ dev = [
     "pytest>=9.0",
     "ruff>=0.17",
 ]
+# Building the Windows/macOS apps (see packaging/).
+package = [
+    "pyinstaller>=6.16",
+    # Lets PyInstaller convert packaging/icon.png to .ico/.icns.
+    "pillow>=11",
+]
 
 [project.scripts]
 duck-attack = "duck_attack.__main__:main"

@@ -9,6 +9,9 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 - Test: `pytest` (headless via `SDL_VIDEODRIVER=dummy` / `SDL_AUDIODRIVER=dummy`, set in
   `tests/conftest.py`)
 - Lint/format: `ruff check .` and `ruff format .`
+- Build the app for the current OS: `pip install -r requirements-package.txt`, then
+  `pyinstaller packaging/duck_attack.spec --noconfirm` (output in `dist/`; `build/` and
+  `dist/` are git-ignored)
 
 ## Conventions
 
@@ -25,6 +28,9 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 - Keep `ruff check` and `pytest` passing before committing.
 - Keep the docs current: with every change, update `README.md` (setup, how to play,
   layout) and `AGENTS.md` (commands, conventions, architecture, testing) in the same task.
+- Everything the game loads at runtime must live under `src/duck_attack/assets/`: the
+  PyInstaller spec bundles exactly that folder (as `duck_attack/assets`, so
+  `settings.ASSETS_DIR` works unchanged in the frozen app).
 
 ## Architecture
 
@@ -48,6 +54,14 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
   row; silent without an audio device). Used for the single shot sound
   (`Game.shot_sound`, `settings.SHOT_SOUND`, on every click while playing, hit or miss)
   and by `AmbientSounds` for duck calls at random intervals.
+- `packaging/`: `duck_attack.spec` (PyInstaller onedir build; on macOS also a
+  `DuckAttack.app` bundle with the version from `pyproject.toml`), `launcher.py` (entry
+  script), `icon.png` (made from the duck image by `make_icon.py`). `*.spec` is
+  git-ignored except this one.
+- `.github/workflows/`: `ci.yml` (ruff + pytest on push/PR); `release.yml` builds
+  Windows x64, macOS arm64 (`macos-latest`) and macOS Intel (`macos-15-intel`), runs a
+  headless smoke test (app must still be running after 10 s), uploads zips, and on a
+  `vX.Y.Z` tag (must match `pyproject.toml`) creates a GitHub Release. Builds are unsigned.
 
 ## Testing
 

@@ -1,6 +1,23 @@
 # duck-attack
 A small Pygame game similar to Moorhuhn.
 
+## Download
+
+Ready-to-play builds for Windows and macOS (no Python needed) are attached to the
+[GitHub Releases](https://github.com/steffenmueller4/duck-attack/releases):
+
+- **Windows:** `DuckAttack-<version>-windows-x64.zip`. Unzip it and start
+  `DuckAttack\DuckAttack.exe` (keep the folder together).
+- **macOS:** `DuckAttack-<version>-macos-arm64.zip` (Apple Silicon) or `-macos-intel.zip`
+  (Intel). Unzip it and move `DuckAttack.app` to Applications.
+
+The builds are not code-signed yet, so the system warns the first time:
+
+- **Windows** ("Windows protected your PC"): click "More info", then "Run anyway".
+- **macOS** ("cannot be opened" / "not verified"): open the app once, then go to System
+  Settings → Privacy & Security and click "Open Anyway". Alternatively run
+  `xattr -dr com.apple.quarantine /Applications/DuckAttack.app` once.
+
 ## Setup
 
 Requires Python 3.12+ (developed on 3.14). The repo's `.python-version` points at a
@@ -57,6 +74,28 @@ ruff check .         # lint
 ruff format .        # format
 ```
 
+## Build packages
+
+The apps are built with [PyInstaller](https://pyinstaller.org) from
+`packaging/duck_attack.spec`. PyInstaller can't cross-compile, so build on the target OS:
+
+```sh
+pip install -r requirements-package.txt
+pyinstaller packaging/duck_attack.spec --noconfirm
+```
+
+This creates `dist/DuckAttack/` (Windows: `DuckAttack.exe` plus its libraries) or
+`dist/DuckAttack.app` (macOS). After changing the duck image, regenerate the app icon
+with `python packaging/make_icon.py`.
+
+GitHub Actions (`.github/workflows/release.yml`) builds Windows x64, macOS Apple Silicon
+and macOS Intel and smoke-tests each build:
+
+- **Test build:** Actions → Release → "Run workflow"; the zips appear as artifacts of the run.
+- **Release:** bump `version` in `pyproject.toml`, then push a matching tag, e.g.
+  `git tag v0.2.0 && git push origin v0.2.0`. The workflow creates the GitHub Release
+  with the three zips.
+
 ## Layout
 
 ```
@@ -74,4 +113,6 @@ src/duck_attack/
   assets/images/     background, duck, crosshair
   assets/sounds/     shot sound and ambient duck calls
 tests/               pytest tests
+packaging/           PyInstaller spec, launcher script and app icon
+.github/workflows/   CI (lint + tests) and release builds
 ```
