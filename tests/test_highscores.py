@@ -34,3 +34,15 @@ def test_corrupt_file_starts_fresh(tmp_path):
     path = tmp_path / "hs.json"
     path.write_text("not json")
     assert HighScoreList(path).entries == []
+
+
+def test_names_are_persisted(tmp_path):
+    path = tmp_path / "hs.json"
+    HighScoreList(path).add(HighScore(40, at(1), "Ann"))
+    assert HighScoreList(path).entries == [HighScore(40, at(1), "Ann")]
+
+
+def test_entries_without_name_still_load(tmp_path):
+    path = tmp_path / "hs.json"
+    path.write_text('[{"score": 30, "timestamp": "2026-10-17T12:03:00"}]')
+    assert HighScoreList(path).entries == [HighScore(30, at(3), "")]

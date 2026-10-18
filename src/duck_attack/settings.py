@@ -52,6 +52,10 @@ TIME_WARNING = 10  # seconds left from which the timer turns red
 HIGHSCORES_FILE = Path.home() / ".duck-attack" / "highscores.json"
 MAX_HIGHSCORES = 10
 
+# The last entered player name is remembered here and prefilled before the next round.
+PLAYER_NAME_FILE = Path.home() / ".duck-attack" / "player.txt"
+PLAYER_NAME_MAX_LENGTH = 16
+
 HUD_FONT_SIZE = 48
 HUD_MARGIN = 20  # distance of score/timer from the screen corners in pixels
 TEXT_COLOR = (255, 255, 255)

@@ -11,7 +11,8 @@ from duck_attack import settings
 @dataclass(frozen=True)
 class HighScore:
     score: int
-    timestamp: datetime  # when the round started; identifies the round for now
+    timestamp: datetime  # when the round started; identifies the round
+    name: str = ""  # player name; empty for entries saved before names existed
 
 
 class HighScoreList:
@@ -26,7 +27,11 @@ class HighScoreList:
         try:
             data = json.loads(self.path.read_text())
             return [
-                HighScore(int(item["score"]), datetime.fromisoformat(item["timestamp"]))
+                HighScore(
+                    int(item["score"]),
+                    datetime.fromisoformat(item["timestamp"]),
+                    str(item.get("name", "")),
+                )
                 for item in data
             ]
         except FileNotFoundError:
@@ -37,7 +42,10 @@ class HighScoreList:
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        data = [{"score": e.score, "timestamp": e.timestamp.isoformat()} for e in self.entries]
+        data = [
+            {"score": e.score, "timestamp": e.timestamp.isoformat(), "name": e.name}
+            for e in self.entries
+        ]
         self.path.write_text(json.dumps(data, indent=2))
 
     def add(self, entry: HighScore) -> int | None:

@@ -15,3 +15,11 @@ def isolated_highscores(tmp_path, monkeypatch):
     path = tmp_path / "highscores.json"
     monkeypatch.setattr(settings, "HIGHSCORES_FILE", path)
     return path
+
+
+@pytest.fixture(autouse=True)
+def isolated_player_name(tmp_path, monkeypatch):
+    """Never touch the player's real remembered name from tests."""
+    path = tmp_path / "player.txt"
+    monkeypatch.setattr(settings, "PLAYER_NAME_FILE", path)
+    return path
