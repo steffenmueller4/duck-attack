@@ -28,8 +28,8 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.14"
       - run: pip install -r requirements-package.txt
@@ -74,7 +74,7 @@ jobs:
         # ditto keeps the app bundle's symlinks and signature intact.
         run: ditto -c -k --keepParent dist/DuckAttack.app "$ZIP_NAME"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.platform }}
           path: ${{ env.ZIP_NAME }}
@@ -86,7 +86,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           merge-multiple: true
       - run: gh release create "$GITHUB_REF_NAME" *.zip --generate-notes --repo "$GITHUB_REPOSITORY"
