@@ -74,6 +74,9 @@ ruff check .         # lint
 ruff format .        # format
 ```
 
+Dependabot (`.github/dependabot.yml`) opens weekly pull requests that bump the pinned
+Python packages in `requirements*.txt` and the GitHub Actions used by the workflows.
+
 ## Build packages
 
 The apps are built with [PyInstaller](https://pyinstaller.org) from
@@ -114,5 +117,5 @@ src/duck_attack/
   assets/sounds/     shot sound and ambient duck calls
 tests/               pytest tests
 packaging/           PyInstaller spec, launcher script and app icon
-.github/workflows/   CI (lint + tests) and release builds
+.github/             CI (lint + tests), release builds, Dependabot
 ```
