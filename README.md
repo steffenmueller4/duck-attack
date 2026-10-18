@@ -63,8 +63,8 @@ src/duck_attack/
   hud.py             score and timer display, text rendering
   screens.py         round-over and high-score screens
   highscores.py      high-score list (JSON file)
-  sounds.py          shot sounds and ambient duck calls
+  sounds.py          shot sound and ambient duck calls
   assets/images/     background, duck, crosshair
-  assets/sounds/     shot sounds and ambient duck calls
+  assets/sounds/     shot sound and ambient duck calls
 tests/               pytest tests
 ```

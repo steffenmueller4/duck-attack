@@ -14,7 +14,7 @@ def mixer():
 
 def test_all_sounds_load(mixer):
     assert len(RandomSound(settings.AMBIENT_SOUNDS, 1.0).sounds) == 3
-    assert len(RandomSound(settings.SHOT_SOUNDS, 1.0).sounds) == 3
+    assert len(RandomSound([settings.SHOT_SOUND], 1.0).sounds) == 1
 
 
 def test_plays_after_delay_and_reschedules(mixer):
@@ -29,7 +29,7 @@ def test_plays_after_delay_and_reschedules(mixer):
 
 
 def test_never_repeats_the_same_sound_twice_in_a_row(mixer):
-    sound = RandomSound(settings.SHOT_SOUNDS, 1.0)
+    sound = RandomSound(settings.AMBIENT_SOUNDS, 1.0)
     previous = None
     for _ in range(30):
         sound.play()
@@ -42,6 +42,6 @@ def test_silent_without_audio_device():
     ambience = AmbientSounds()
     assert ambience.random_sound.sounds == []
     ambience.update(settings.AMBIENT_MAX_DELAY)  # must not raise
-    shot = RandomSound(settings.SHOT_SOUNDS, 1.0)
+    shot = RandomSound([settings.SHOT_SOUND], 1.0)
     shot.play()  # must not raise
     assert shot.last_played is None

@@ -39,9 +39,9 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 - `highscores.py`: `HighScoreList`, top 10 persisted to `settings.HIGHSCORES_FILE`
   (`~/.duck-attack/highscores.json`); entries are identified by round start timestamp.
 - `sounds.py`: `RandomSound` plays a random clip from a set (never the same twice in a
-  row; silent without an audio device). Used for shots (`Game.shot_sound`, on every
-  click while playing, hit or miss) and by `AmbientSounds` for duck calls at random
-  intervals.
+  row; silent without an audio device). Used for the single shot sound
+  (`Game.shot_sound`, `settings.SHOT_SOUND`, on every click while playing, hit or miss)
+  and by `AmbientSounds` for duck calls at random intervals.
 
 ## Testing
 

@@ -18,8 +18,8 @@ AMBIENT_MIN_DELAY = 2.0
 AMBIENT_MAX_DELAY = 7.0
 AMBIENT_VOLUME = 0.6  # 0.0 - 1.0
 
-# Every shot (hit or miss) plays one of these at random.
-SHOT_SOUNDS = [ASSETS_DIR / "sounds" / f"shot_{i}.mp3" for i in (1, 2, 3)]
+# Every shot (hit or miss) plays this sound.
+SHOT_SOUND = ASSETS_DIR / "sounds" / "shot_1.mp3"
 SHOT_VOLUME = 0.8  # 0.0 - 1.0
 
 CROSSHAIR_SIZE = 64  # cursor size in pixels (square)

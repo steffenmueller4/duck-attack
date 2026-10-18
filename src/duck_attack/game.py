@@ -36,7 +36,7 @@ class Game:
         self.highscore_screen = HighScoreScreen()
         self.highscores = HighScoreList(settings.HIGHSCORES_FILE)
         self.ambience = AmbientSounds()
-        self.shot_sound = RandomSound(settings.SHOT_SOUNDS, settings.SHOT_VOLUME)
+        self.shot_sound = RandomSound([settings.SHOT_SOUND], settings.SHOT_VOLUME)
         self.start_round()
 
     def _load_background(self) -> pygame.Surface:
