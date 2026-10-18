@@ -39,6 +39,7 @@ DUCK_MAX_SCALE = 1.0
 # rounded to POINTS_ROUNDING): e.g. 10 at scale 1.0, 20 at 0.5, 30 at 0.35.
 POINTS_PER_HIT = 10
 POINTS_ROUNDING = 5
+MISS_PENALTY = 5  # points subtracted for every shot that hits no duck
 
 # Ducks fly somewhere in the sky band between these y positions.
 DUCK_MIN_Y = 40

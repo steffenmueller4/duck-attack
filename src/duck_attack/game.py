@@ -76,7 +76,10 @@ class Game:
                     self.start_round()
 
     def shoot(self, pos: tuple[int, int]) -> bool:
-        """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit."""
+        """Fire at screen position ``pos``. Hits at most one duck; returns whether one was hit.
+
+        A miss costs ``settings.MISS_PENALTY`` points.
+        """
         self.shot_sound.play()
         # Check the closest (drawn on top) duck first.
         for duck in reversed(self._ducks_far_to_near()):
@@ -84,6 +87,7 @@ class Game:
                 duck.shoot()
                 self.score += duck.points
                 return True
+        self.score -= settings.MISS_PENALTY
         return False
 
     def _ducks_far_to_near(self) -> list[Duck]:

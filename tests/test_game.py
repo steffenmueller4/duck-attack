@@ -38,11 +38,23 @@ def test_left_click_shoots_duck_and_next_one_starts():
     pygame.quit()
 
 
-def test_missed_shot_hits_nothing():
+def test_missed_shot_hits_nothing_and_costs_points():
     game = Game()
     game.update(1.0)
     assert not game.shoot((settings.SCREEN_WIDTH - 1, settings.SCREEN_HEIGHT - 1))
-    assert game.score == 0
+    assert game.score == -settings.MISS_PENALTY
+    pygame.quit()
+
+
+def test_miss_penalty_applies_per_miss_after_hits():
+    game = Game()
+    game.update(1.0)
+    (duck,) = game.ducks
+    x, y = duck.mask.outline()[0]
+    assert game.shoot((duck.rect.x + x, duck.rect.y + y))
+    for _ in range(2):
+        assert not game.shoot((settings.SCREEN_WIDTH - 1, settings.SCREEN_HEIGHT - 1))
+    assert game.score == duck.points - 2 * settings.MISS_PENALTY
     pygame.quit()
 
 

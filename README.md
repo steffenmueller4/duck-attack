@@ -33,7 +33,8 @@ Aim with the crosshair and click ducks to shoot them; every shot goes bang. A ro
 top-right.
 
 Ducks fly in at random distances. Close (big) ducks are worth 10 points; farther (smaller)
-ones are worth more, up to 30. Duck calls play in the background from time to time.
+ones are worth more, up to 30. Every missed shot costs 5 points, so the score can go
+negative. Duck calls play in the background from time to time.
 
 After the round, your score is shown for 10 seconds, followed by the top-10 high-score
 list (your round is highlighted). Click to start the next round.
