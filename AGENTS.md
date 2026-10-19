@@ -64,7 +64,8 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
   `workflows/ci.yml` (ruff + pytest on push/PR); `workflows/release.yml` builds Windows
   x64, macOS arm64 (`macos-latest`) and macOS Intel (`macos-15-intel`), runs a headless
   smoke test (app must still be running after 10 s), uploads zips, and on a `vX.Y.Z` tag
-  (must match `pyproject.toml`) creates a GitHub Release. Builds are unsigned.
+  (must match `pyproject.toml`) creates a GitHub Release, or uploads the zips
+  (`--clobber`) to an existing release with that tag. Builds are unsigned.
 
 ## Testing
 

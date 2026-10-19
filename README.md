@@ -97,7 +97,8 @@ and macOS Intel and smoke-tests each build:
 - **Test build:** Actions → Release → "Run workflow"; the zips appear as artifacts of the run.
 - **Release:** bump `version` in `pyproject.toml`, then push a matching tag, e.g.
   `git tag v0.2.0 && git push origin v0.2.0`. The workflow creates the GitHub Release
-  with the three zips.
+  with the three zips. If the release already exists (e.g. created in the GitHub UI, or
+  the workflow is re-run), it only uploads the zips to it, replacing older ones.
 
 ## Layout
 

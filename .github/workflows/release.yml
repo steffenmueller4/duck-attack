@@ -89,6 +89,13 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           merge-multiple: true
-      - run: gh release create "$GITHUB_REF_NAME" *.zip --generate-notes --repo "$GITHUB_REPOSITORY"
+      # The release may already exist (created in the GitHub UI, which also pushes the
+      # tag, or by an earlier run of this workflow): then just replace its zips.
+      - run: |
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" *.zip --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$GITHUB_REF_NAME" *.zip --generate-notes --repo "$GITHUB_REPOSITORY"
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
