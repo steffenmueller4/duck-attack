@@ -68,6 +68,10 @@ Round length, points, duck size/speed, sound volume and more can be tuned in
 
 ## Develop
 
+The game's behavior is specified in [`specs/`](specs/README.md), one file per capability
+with numbered requirements. New features start as a change proposal in `specs/changes/`
+(copy `TEMPLATE.md`), are discussed there, then implemented and folded into the specs.
+
 ```sh
 pytest               # tests (run headless)
 ruff check .         # lint
@@ -117,6 +121,7 @@ src/duck_attack/
   assets/images/     background, duck, crosshair
   assets/sounds/     shot sound and ambient duck calls
 tests/               pytest tests
+specs/               behavior specs; specs/changes/ holds feature proposals
 packaging/           PyInstaller spec, launcher script and app icon
 .github/             CI (lint + tests), release builds, Dependabot
 ```

@@ -15,6 +15,11 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 
 ## Conventions
 
+- Specs in `specs/` are the source of truth for behavior (see `specs/README.md`). New
+  features start as a proposal in `specs/changes/NNNN-name.md` from `TEMPLATE.md`;
+  implement only once it is `Accepted`, then fold its requirements into the capability
+  specs and set it to `Done`. Keep every requirement's "Verified by" test list accurate,
+  and update the specs whenever behavior changes.
 - Source lives in `src/duck_attack/`, tests in `tests/`.
 - Game-wide constants (sizes, speeds, timings, colors, file paths) go in `settings.py`;
   don't hard-code tunable values elsewhere.
