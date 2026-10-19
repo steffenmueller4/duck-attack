@@ -43,5 +43,3 @@ Verified by: `test_shot_duck_falls_and_is_removed`
 **DUCK-8:** When ducks overlap, closer (larger) ducks must be drawn in front of farther
 ones.
 Verified by: manual
-
-**DUCK-8:** The ducks must sum up to the same high-score every round.
