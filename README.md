@@ -1,5 +1,5 @@
 # duck-attack
-A small Pygame game where you need to shoot ducks.
+A small Pygame where you need to shoot ducks.
 
 ## Download
 
