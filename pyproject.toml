@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "duck-attack"
-version = "0.0.1"
+version = "0.0.2"
 description = "A small Pygame game similar to Moorhuhn."
 readme = "README.md"
 license = "Apache-2.0"
