@@ -1,5 +1,5 @@
 # duck-attack
-A small Pygame game similar to Moorhuhn.
+A small Pygame game where you need to shoot ducks.
 
 ## Download
 
