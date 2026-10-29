@@ -12,9 +12,7 @@ Currently supported versions are:
 
 If you believe you have found a security vulnerability in this repository, please report it to us through coordinated disclosure.
 
-Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.
-
-Instead, please send an email to github.swell839[@]slmails.com (yes, I will receive those mails).
+Please report security vulnerabilities through public GitHub issues, discussions, or pull requests.
 
 Please include as much of the information listed below as you can to help us better understand and resolve the issue:
 
