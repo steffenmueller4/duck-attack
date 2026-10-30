@@ -10,6 +10,7 @@ FPS = 60
 ASSETS_DIR = Path(__file__).parent / "assets"
 BACKGROUND_IMAGE = ASSETS_DIR / "images" / "background.png"
 DUCK_IMAGE = ASSETS_DIR / "images" / "duck.png"
+ANGRY_DUCK_IMAGE = ASSETS_DIR / "images" / "angry_duck.png"
 CROSSHAIR_IMAGE = ASSETS_DIR / "images" / "crosshair.png"
 AMBIENT_SOUNDS = [ASSETS_DIR / "sounds" / f"duck_{i}.mp3" for i in (1, 2, 3)]
 
@@ -44,6 +45,18 @@ MISS_PENALTY = 5  # points subtracted for every shot that hits no duck
 # Ducks fly somewhere in the sky band between these y positions.
 DUCK_MIN_Y = 40
 DUCK_MAX_Y = 320
+
+# Angry ducks pop up at random spots as bonus targets: one at a time, at most
+# ANGRY_DUCK_MAX_PER_ROUND per round, each after a random ANGRY_DUCK_MIN_DELAY..MAX_DELAY
+# seconds (counted from the round start, then from when the previous one was gone).
+ANGRY_DUCK_WIDTH = 120  # on-screen width in pixels; height keeps the image's aspect ratio
+ANGRY_DUCK_MIN_DELAY = 5.0
+ANGRY_DUCK_MAX_DELAY = 15.0
+ANGRY_DUCK_MAX_PER_ROUND = 2
+ANGRY_DUCK_POP_TIME = 0.15  # seconds to grow from nothing to full size
+ANGRY_DUCK_LIFETIME = 1.5  # seconds on screen (from appearing) before it vanishes unshot
+ANGRY_DUCK_MARGIN = 80  # minimum distance from the top edge, keeps the HUD uncovered
+ANGRY_DUCK_POINTS = 50
 
 ROUND_DURATION = 30  # seconds
 SCORE_SCREEN_DURATION = 10  # seconds the final score is shown before the high-score list

@@ -56,6 +56,9 @@ Ducks fly in at random distances. Close (big) ducks are worth 10 points; farther
 ones are worth more, up to 30. Every missed shot costs 5 points, so the score can go
 negative. Duck calls play in the background from time to time.
 
+Up to two times per round, an angry duck pops up somewhere on the screen. It's only there
+for 1.5 seconds, but hitting it is worth 50 points. Letting it get away costs nothing.
+
 After the round, your score is shown for 10 seconds, followed by the top-10 high-score
 list with player names (your round is highlighted). Click to get back to the name entry
 for the next round.
@@ -112,13 +115,14 @@ src/duck_attack/
   game.py            main loop and round flow (name -> playing -> round over -> high scores)
   settings.py        tunable constants
   duck.py            duck sprite: flight, distance/size, hit test, points
+  angry_duck.py      angry duck sprite: pops up at a random spot, bonus points
   crosshair.py       crosshair mouse cursor
   hud.py             score and timer display, text rendering
   screens.py         name-entry, round-over and high-score screens
   highscores.py      high-score list (JSON file)
   player.py          remembered player name (text file)
   sounds.py          shot sound and ambient duck calls
-  assets/images/     background, duck, crosshair
+  assets/images/     background, duck, angry duck, crosshair
   assets/sounds/     shot sound and ambient duck calls
 tests/               pytest tests
 specs/               behavior specs; specs/changes/ holds feature proposals

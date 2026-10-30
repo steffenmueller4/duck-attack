@@ -45,9 +45,13 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
   name; Enter or click starts once the name is non-empty) -> `PLAYING` (30 s round) ->
   `ROUND_OVER` (final score, 10 s) -> `HIGHSCORES` (click goes back to `NAME_ENTRY`).
   `Game.shoot` adds the hit duck's `points` or subtracts `settings.MISS_PENALTY` on a
-  miss (the score may go negative).
+  miss (the score may go negative); it checks angry ducks before flying ducks.
 - `duck.py`: `Duck` sprite with a random distance (`scale`) that sets its size, speed
   and `points`; pixel-mask hit test; falls when shot. One duck flies at a time.
+- `angry_duck.py`: `AngryDuck` bonus sprite that pops up (grows in) at a random spot,
+  vanishes after `settings.ANGRY_DUCK_LIFETIME` unless shot, then falls when shot.
+  `Game` spawns them (`angry_ducks` group): one at a time after a random delay, at most
+  `settings.ANGRY_DUCK_MAX_PER_ROUND` per round; drawn in front of flying ducks.
 - `crosshair.py`: crosshair as the system color cursor (hotspot on the red dot).
 - `hud.py`: `render_text` (shadowed text), cached `Label`, `Hud` (score + timer).
 - `screens.py`: `NameEntryScreen`, `RoundOverScreen`, `HighScoreScreen` overlays.
