@@ -38,6 +38,8 @@ class Game:
         self.angry_ducks: pygame.sprite.Group = pygame.sprite.Group()
         self.angry_ducks_left = 0  # how many more angry ducks may appear this round
         self.angry_duck_delay = 0.0  # seconds until the next angry duck appears
+        self.angry_duck_sound = RandomSound([settings.ANGRY_DUCK_SOUND], settings.ANGRY_DUCK_VOLUME)
+        self.quacking_duck: AngryDuck | None = None  # the angry duck whose sound is playing
         pygame.mouse.set_cursor(make_crosshair_cursor())
         self.hud = Hud()
         self.name_entry_screen = NameEntryScreen()
@@ -91,6 +93,7 @@ class Game:
         self.state_time = 0.0
         self.ducks.empty()
         self.angry_ducks.empty()
+        self._fade_angry_duck_sound()
         self.highscore_rank = self.highscores.add(
             HighScore(self.score, self.round_started, self.player_name)
         )
@@ -150,10 +153,20 @@ class Game:
         if self.angry_ducks_left > 0 and all(duck.shot for duck in self.angry_ducks):
             self.angry_duck_delay -= dt
             if self.angry_duck_delay <= 0:
-                self.angry_ducks.add(AngryDuck(self.angry_duck_image))
+                self.quacking_duck = AngryDuck(self.angry_duck_image)
+                self.angry_ducks.add(self.quacking_duck)
+                self.angry_duck_sound.play()
                 self.angry_ducks_left -= 1
                 self.angry_duck_delay = self._random_angry_duck_delay()
         self.angry_ducks.update(dt)
+        if self.quacking_duck and (self.quacking_duck.shot or not self.quacking_duck.alive()):
+            self._fade_angry_duck_sound()
+
+    def _fade_angry_duck_sound(self) -> None:
+        """Fade out the quacking once its angry duck is gone (shot, vanished or round over)."""
+        if self.quacking_duck:
+            self.angry_duck_sound.fadeout(settings.ANGRY_DUCK_SOUND_FADE)
+            self.quacking_duck = None
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""

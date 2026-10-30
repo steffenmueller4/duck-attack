@@ -102,18 +102,14 @@ def _angry_ducks_seen(game, seconds, step=0.05):
 
 
 def test_angry_duck_appears_after_a_random_delay():
-    game = playing_game()
-    game.update(settings.ANGRY_DUCK_MIN_DELAY - 0.1)
-    assert not game.angry_ducks
-    assert (
-        len(
-            _angry_ducks_seen(
-                game, settings.ANGRY_DUCK_MAX_DELAY - settings.ANGRY_DUCK_MIN_DELAY + 0.2
-            )
-        )
-        == 1
-    )
-    pygame.quit()
+    for _ in range(5):
+        game = playing_game()
+        step = 0.05
+        while not game.angry_ducks:
+            game.update(step)
+        assert settings.ANGRY_DUCK_MIN_DELAY - step <= game.state_time
+        assert game.state_time <= settings.ANGRY_DUCK_MAX_DELAY + step
+        pygame.quit()
 
 
 def test_only_one_angry_duck_on_screen_at_a_time(monkeypatch):
@@ -182,6 +178,68 @@ def test_angry_duck_disappears_when_round_ends():
     assert not game.angry_ducks
     game.update(1.0)
     assert not game.angry_ducks
+    pygame.quit()
+
+
+def _record_angry_duck_sound(game):
+    """Replace the angry duck sound with a recorder; returns the list of calls."""
+    calls = []
+    game.angry_duck_sound.play = lambda: calls.append("play")
+    game.angry_duck_sound.fadeout = lambda seconds: calls.append(("fadeout", seconds))
+    return calls
+
+
+def _first_angry_duck(game, monkeypatch):
+    """Let the first angry duck of the round appear after 1 s; returns it."""
+    monkeypatch.setattr(settings, "ANGRY_DUCK_MIN_DELAY", 1.0)
+    monkeypatch.setattr(settings, "ANGRY_DUCK_MAX_DELAY", 1.0)
+    game.angry_duck_delay = 1.0
+    (angry,) = _angry_ducks_seen(game, 1.1)
+    return angry
+
+
+def test_angry_duck_quacks_when_it_appears(monkeypatch):
+    game = playing_game()
+    calls = _record_angry_duck_sound(game)
+    game.update(0.5)
+    assert calls == []
+    _first_angry_duck(game, monkeypatch)
+    assert calls == ["play"]
+    pygame.quit()
+
+
+def test_angry_duck_sound_fades_out_when_it_is_shot(monkeypatch):
+    game = playing_game()
+    calls = _record_angry_duck_sound(game)
+    angry = _first_angry_duck(game, monkeypatch)
+    angry.update(settings.ANGRY_DUCK_POP_TIME)  # fully grown
+    x, y = angry.mask.outline()[0]
+    assert game.shoot((angry.rect.x + x, angry.rect.y + y))
+    game.update(0.01)
+    assert calls == ["play", ("fadeout", settings.ANGRY_DUCK_SOUND_FADE)]
+    game.update(0.5)  # less than the 1 s delay until the next angry duck
+    assert len(calls) == 2  # faded out only once
+    pygame.quit()
+
+
+def test_angry_duck_sound_fades_out_when_it_vanishes(monkeypatch):
+    game = playing_game()
+    calls = _record_angry_duck_sound(game)
+    _first_angry_duck(game, monkeypatch)
+    _angry_ducks_seen(game, settings.ANGRY_DUCK_LIFETIME - 0.2)
+    assert calls == ["play"]
+    _angry_ducks_seen(game, 0.3)
+    assert calls == ["play", ("fadeout", settings.ANGRY_DUCK_SOUND_FADE)]
+    pygame.quit()
+
+
+def test_angry_duck_sound_fades_out_when_round_ends(monkeypatch):
+    game = playing_game()
+    calls = _record_angry_duck_sound(game)
+    _first_angry_duck(game, monkeypatch)
+    game.update(settings.ROUND_DURATION)
+    assert game.state is State.ROUND_OVER
+    assert calls == ["play", ("fadeout", settings.ANGRY_DUCK_SOUND_FADE)]
     pygame.quit()
 
 

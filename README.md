@@ -57,7 +57,8 @@ ones are worth more, up to 30. Every missed shot costs 5 points, so the score ca
 negative. Duck calls play in the background from time to time.
 
 Up to two times per round, an angry duck pops up somewhere on the screen. It's only there
-for 1.5 seconds, but hitting it is worth 50 points. Letting it get away costs nothing.
+for 1.5 seconds, quacking angrily, but hitting it is worth 50 points. Letting it get
+away costs nothing.
 
 After the round, your score is shown for 10 seconds, followed by the top-10 high-score
 list with player names (your round is highlighted). Click to get back to the name entry
@@ -121,9 +122,9 @@ src/duck_attack/
   screens.py         name-entry, round-over and high-score screens
   highscores.py      high-score list (JSON file)
   player.py          remembered player name (text file)
-  sounds.py          shot sound and ambient duck calls
+  sounds.py          shot sound, ambient duck calls, angry duck quacking
   assets/images/     background, duck, angry duck, crosshair
-  assets/sounds/     shot sound and ambient duck calls
+  assets/sounds/     shot sound, ambient duck calls, angry duck quacking
 tests/               pytest tests
 specs/               behavior specs; specs/changes/ holds feature proposals
 packaging/           PyInstaller spec, launcher script and app icon

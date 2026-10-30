@@ -63,7 +63,10 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
 - `sounds.py`: `RandomSound` plays a random clip from a set (never the same twice in a
   row; silent without an audio device). Used for the single shot sound
   (`Game.shot_sound`, `settings.SHOT_SOUND`, on every click while playing, hit or miss)
-  and by `AmbientSounds` for duck calls at random intervals.
+  and by `AmbientSounds` for duck calls at random intervals. `Game.angry_duck_sound`
+  (`settings.ANGRY_DUCK_SOUND`) plays when an angry duck appears and is faded out
+  (`RandomSound.fadeout`) once that duck (`Game.quacking_duck`) is shot, vanishes or
+  the round ends.
 - `packaging/`: `duck_attack.spec` (PyInstaller onedir build; on macOS also a
   `DuckAttack.app` bundle with the version from `pyproject.toml`), `launcher.py` (entry
   script), `icon.png` (made from the duck image by `make_icon.py`). `*.spec` is

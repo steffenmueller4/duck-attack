@@ -23,6 +23,11 @@ AMBIENT_VOLUME = 0.6  # 0.0 - 1.0
 SHOT_SOUND = ASSETS_DIR / "sounds" / "shot_1.mp3"
 SHOT_VOLUME = 0.8  # 0.0 - 1.0
 
+# Angry quacking while an angry duck is on screen; fades out once it is gone.
+ANGRY_DUCK_SOUND = ASSETS_DIR / "sounds" / "angry_duck.mp3"
+ANGRY_DUCK_VOLUME = 0.7  # 0.0 - 1.0; the clip is loud
+ANGRY_DUCK_SOUND_FADE = 0.2  # seconds
+
 CROSSHAIR_SIZE = 64  # cursor size in pixels (square)
 # Aim point as a fraction of the image size: the red dot, which sits slightly above center.
 CROSSHAIR_HOTSPOT = (0.501, 0.485)

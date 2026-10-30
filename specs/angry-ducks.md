@@ -4,7 +4,8 @@
 
 Every now and then an angry duck pops up at a random spot on the screen and stays only
 briefly. Shooting it in time gives bonus points; letting it go costs nothing. Added by
-[changes/0001-angry-ducks.md](changes/0001-angry-ducks.md).
+[changes/0001-angry-ducks.md](changes/0001-angry-ducks.md); its sound by
+[changes/0002-angry-duck-sound.md](changes/0002-angry-duck-sound.md).
 
 ## Requirements
 
@@ -40,7 +41,8 @@ Verified by: `test_angry_duck_appears_fully_on_screen_below_the_hud`
 **ANGRY-4:** An angry duck must pop up: it grows from nothing to full size within
 `ANGRY_DUCK_POP_TIME` (0.15 s), and stays in place. If it isn't shot within
 `ANGRY_DUCK_LIFETIME` (1.5 s, counted from when it appeared), it vanishes. Letting it
-vanish costs no points.
+vanish costs no points. While it is on screen, it quacks angrily (see
+[audio.md](audio.md), AUDIO-6).
 Verified by: `test_angry_duck_pops_up_then_vanishes_unshot`
 
 **ANGRY-5:** A shot must only hit an angry duck on a non-transparent pixel of its image,

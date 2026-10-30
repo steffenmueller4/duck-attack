@@ -30,6 +30,11 @@ class RandomSound:
         self.last_played = random.choice(choices)
         self.sounds[self.last_played].play()
 
+    def fadeout(self, seconds: float) -> None:
+        """Fade out the last played sound over ``seconds`` instead of letting it finish."""
+        if self.last_played is not None:
+            self.sounds[self.last_played].fadeout(round(seconds * 1000))
+
 
 class AmbientSounds:
     """Plays a random ambient duck sound every few seconds."""

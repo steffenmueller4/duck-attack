@@ -15,6 +15,7 @@ def mixer():
 def test_all_sounds_load(mixer):
     assert len(RandomSound(settings.AMBIENT_SOUNDS, 1.0).sounds) == 3
     assert len(RandomSound([settings.SHOT_SOUND], 1.0).sounds) == 1
+    assert len(RandomSound([settings.ANGRY_DUCK_SOUND], 1.0).sounds) == 1
 
 
 def test_plays_after_delay_and_reschedules(mixer):
@@ -44,4 +45,5 @@ def test_silent_without_audio_device():
     ambience.update(settings.AMBIENT_MAX_DELAY)  # must not raise
     shot = RandomSound([settings.SHOT_SOUND], 1.0)
     shot.play()  # must not raise
+    shot.fadeout(0.2)  # must not raise
     assert shot.last_played is None
