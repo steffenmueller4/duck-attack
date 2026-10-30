@@ -17,13 +17,19 @@ the screen, or right after it was shot, while it is still falling). See
 Verified by: `test_left_click_shoots_duck_and_next_one_starts`
 
 **ROUND-3:** Every left click during a round is a shot. A shot must hit at most one
-duck: the closest (drawn on top) flying duck whose visible pixels are under the
-crosshair's hotspot.
-Verified by: `test_left_click_shoots_duck_and_next_one_starts`,
-`test_closer_duck_in_front_is_hit_first`
+duck: the top-most duck whose visible pixels are under the crosshair's hotspot. An
+angry duck that isn't falling comes first (see [angry-ducks.md](angry-ducks.md),
+ANGRY-7), then flying ducks from closest to farthest.
+- *Scenario:* Given an angry duck overlaps the flying duck, when the player shoots at
+  the overlap, then only the angry duck is hit and the flying duck keeps flying.
 
-**ROUND-4:** A hit must add the duck's points (see DUCK-3) to the score.
-Verified by: `test_each_hit_adds_points`
+Verified by: `test_left_click_shoots_duck_and_next_one_starts`,
+`test_closer_duck_in_front_is_hit_first`,
+`test_angry_duck_in_front_of_flying_duck_is_hit_first`
+
+**ROUND-4:** A hit must add the duck's points to the score: DUCK-3 for flying ducks,
+ANGRY-6 for angry ducks.
+Verified by: `test_each_hit_adds_points`, `test_angry_duck_hit_adds_its_points`
 
 **ROUND-5:** A miss must subtract `MISS_PENALTY` (5) points. The score may go negative.
 - *Scenario:* Given a score of 0, when the player shoots at the empty sky, then the
@@ -36,11 +42,12 @@ Verified by: `test_missed_shot_hits_nothing_and_costs_points`,
 click.
 Verified by: manual
 
-**ROUND-7:** When the time is up, the round must end: the ducks disappear, the result is
-added to the high-score list (see [high-scores.md](high-scores.md)) and the round-over
-screen is shown. Clicks after that are not shots.
+**ROUND-7:** When the time is up, the round must end: the ducks, including any angry
+duck, disappear and no new angry duck appears, the result is added to the high-score
+list (see [high-scores.md](high-scores.md)) and the round-over screen is shown. Clicks
+after that are not shots.
 Verified by: `test_round_ends_after_duration_and_records_highscore`,
-`test_clicks_do_not_shoot_after_round_is_over`
+`test_clicks_do_not_shoot_after_round_is_over`, `test_angry_duck_disappears_when_round_ends`
 
 ## HUD
 

@@ -12,6 +12,7 @@ written.
 | [name-entry.md](name-entry.md) | Asking for and remembering the player name |
 | [round.md](round.md) | A round: timer, shooting, scoring, HUD |
 | [ducks.md](ducks.md) | Duck spawning, distance, flight, hit test, falling |
+| [angry-ducks.md](angry-ducks.md) | Bonus angry ducks popping up at random spots |
 | [round-end.md](round-end.md) | Round-over score screen and high-score screen |
 | [high-scores.md](high-scores.md) | The persisted top-10 list |
 | [audio.md](audio.md) | Shot sound and ambient duck calls |

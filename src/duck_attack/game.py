@@ -1,11 +1,13 @@
 """Main game loop."""
 
+import random
 from datetime import datetime
 from enum import Enum, auto
 
 import pygame
 
 from duck_attack import settings
+from duck_attack.angry_duck import AngryDuck, load_angry_duck_image
 from duck_attack.crosshair import make_crosshair_cursor
 from duck_attack.duck import Duck, load_duck_image
 from duck_attack.highscores import HighScore, HighScoreList
@@ -32,6 +34,12 @@ class Game:
         self.background = self._load_background()
         self.duck_image = load_duck_image()
         self.ducks: pygame.sprite.Group = pygame.sprite.Group()
+        self.angry_duck_image = load_angry_duck_image()
+        self.angry_ducks: pygame.sprite.Group = pygame.sprite.Group()
+        self.angry_ducks_left = 0  # how many more angry ducks may appear this round
+        self.angry_duck_delay = 0.0  # seconds until the next angry duck appears
+        self.angry_duck_sound = RandomSound([settings.ANGRY_DUCK_SOUND], settings.ANGRY_DUCK_VOLUME)
+        self.quacking_duck: AngryDuck | None = None  # the angry duck whose sound is playing
         pygame.mouse.set_cursor(make_crosshair_cursor())
         self.hud = Hud()
         self.name_entry_screen = NameEntryScreen()
@@ -56,6 +64,7 @@ class Game:
         self.state = State.NAME_ENTRY
         self.state_time = 0.0
         self.ducks.empty()
+        self.angry_ducks.empty()
         pygame.key.start_text_input()
 
     def type_name(self, text: str) -> None:
@@ -73,6 +82,9 @@ class Game:
         self.state_time = 0.0  # seconds spent in the current state
         self.score = 0
         self.ducks.empty()
+        self.angry_ducks.empty()
+        self.angry_ducks_left = settings.ANGRY_DUCK_MAX_PER_ROUND
+        self.angry_duck_delay = self._random_angry_duck_delay()
         self.round_started = datetime.now()
         self.highscore_rank = None
 
@@ -80,6 +92,8 @@ class Game:
         self.state = State.ROUND_OVER
         self.state_time = 0.0
         self.ducks.empty()
+        self.angry_ducks.empty()
+        self._fade_angry_duck_sound()
         self.highscore_rank = self.highscores.add(
             HighScore(self.score, self.round_started, self.player_name)
         )
@@ -118,8 +132,8 @@ class Game:
         A miss costs ``settings.MISS_PENALTY`` points.
         """
         self.shot_sound.play()
-        # Check the closest (drawn on top) duck first.
-        for duck in reversed(self._ducks_far_to_near()):
+        # Check the top-most duck first: angry ducks, then flying ducks from closest to farthest.
+        for duck in [*self.angry_ducks, *reversed(self._ducks_far_to_near())]:
             if duck.is_hit_by(pos):
                 duck.shoot()
                 self.score += duck.points
@@ -129,6 +143,30 @@ class Game:
 
     def _ducks_far_to_near(self) -> list[Duck]:
         return sorted(self.ducks, key=lambda duck: duck.scale)
+
+    @staticmethod
+    def _random_angry_duck_delay() -> float:
+        return random.uniform(settings.ANGRY_DUCK_MIN_DELAY, settings.ANGRY_DUCK_MAX_DELAY)
+
+    def _update_angry_ducks(self, dt: float) -> None:
+        # The delay only counts down while no angry duck is waiting to be shot.
+        if self.angry_ducks_left > 0 and all(duck.shot for duck in self.angry_ducks):
+            self.angry_duck_delay -= dt
+            if self.angry_duck_delay <= 0:
+                self.quacking_duck = AngryDuck(self.angry_duck_image)
+                self.angry_ducks.add(self.quacking_duck)
+                self.angry_duck_sound.play()
+                self.angry_ducks_left -= 1
+                self.angry_duck_delay = self._random_angry_duck_delay()
+        self.angry_ducks.update(dt)
+        if self.quacking_duck and (self.quacking_duck.shot or not self.quacking_duck.alive()):
+            self._fade_angry_duck_sound()
+
+    def _fade_angry_duck_sound(self) -> None:
+        """Fade out the quacking once its angry duck is gone (shot, vanished or round over)."""
+        if self.quacking_duck:
+            self.angry_duck_sound.fadeout(settings.ANGRY_DUCK_SOUND_FADE)
+            self.quacking_duck = None
 
     def update(self, dt: float) -> None:
         """Advance the game state by ``dt`` seconds."""
@@ -142,6 +180,7 @@ class Game:
             if all(duck.shot for duck in self.ducks):
                 self.ducks.add(Duck(self.duck_image))
             self.ducks.update(dt)
+            self._update_angry_ducks(dt)
         elif self.state is State.ROUND_OVER and self.state_time >= settings.SCORE_SCREEN_DURATION:
             self.state = State.HIGHSCORES
             self.state_time = 0.0
@@ -155,6 +194,7 @@ class Game:
             # Far ducks first so closer ones are drawn in front of them.
             for duck in self._ducks_far_to_near():
                 self.screen.blit(duck.image, duck.rect)
+            self.angry_ducks.draw(self.screen)  # in front of all flying ducks
             self.hud.draw(self.screen, self.score, self.time_left)
         elif self.state is State.ROUND_OVER:
             seconds_left = settings.SCORE_SCREEN_DURATION - self.state_time

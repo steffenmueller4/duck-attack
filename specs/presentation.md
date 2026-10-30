@@ -21,9 +21,10 @@ Verified by: manual
 with `OVERLAY_COLOR`.
 Verified by: manual
 
-**PRES-4:** Images that need transparency (duck, crosshair) must have a real alpha
-channel.
-Verified by: `test_duck_image_is_scaled_and_transparent`
+**PRES-4:** Images that need transparency (duck, angry duck, crosshair) must have a real
+alpha channel.
+Verified by: `test_duck_image_is_scaled_and_transparent`,
+`test_angry_duck_image_is_scaled_and_transparent`
 
 **PRES-5:** Everything loaded at runtime must live under `src/duck_attack/assets/`.
 Verified by: the release smoke test (see DIST-3)
