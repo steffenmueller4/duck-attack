@@ -71,6 +71,11 @@ Duck Attack is a small Moorhuhn-style shooter built with Pygame (`pygame-ce`, im
   smoke test (app must still be running after 10 s), uploads zips, and on a `vX.Y.Z` tag
   (must match `pyproject.toml`) creates a GitHub Release, or uploads the zips
   (`--clobber`) to an existing release with that tag. Builds are unsigned.
+- GitHub rulesets (repo settings, not files): "Protect main" (default branch; no
+  deletion/force push/direct push; PR required with 1 approval from someone with write
+  access; required check `test` from `ci.yml`, so renaming that job breaks merging until
+  the ruleset is updated; repo admins can bypass only when merging a PR) and
+  "Protect release tags" (`v*`; no deletion or move; repo admins bypass).
 
 ## Testing
 
