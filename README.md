@@ -81,6 +81,13 @@ ruff format .        # format
 Dependabot (`.github/dependabot.yml`) opens weekly pull requests that bump the pinned
 Python packages in `requirements*.txt` and the GitHub Actions used by the workflows.
 
+`main` is protected by a GitHub ruleset ("Protect main"): no deletion, force pushes or
+direct pushes. Every change lands via pull request once the CI `test` check passes and an
+admin or collaborator (write access) has approved it. Repository admins can bypass the
+requirements only when merging a PR ("Merge without waiting for requirements to be
+met"), e.g. for their own PRs, which they can't approve themselves. Release tags (`v*`) can't be deleted
+or moved ("Protect release tags"); only repository admins can bypass this to fix a tag.
+
 ## Build packages
 
 The apps are built with [PyInstaller](https://pyinstaller.org) from
